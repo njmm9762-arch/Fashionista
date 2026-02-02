@@ -14,10 +14,15 @@
     .product img:hover { transform: scale(1.05); }
     .product h3 { margin: 12px 0 6px; font-size: 20px; color: #e91e63; }
     .product p { margin: 6px 0; color: #555; font-style: italic; }
-    .product button { background: #e91e63; color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 16px; transition: background 0.3s, transform 0.2s; }
-    .product button:hover { background: #ff4081; transform: scale(1.05); }
-    .cart { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; padding: 12px 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor:pointer; font-weight:bold; color:#e91e63; }
-    .cart-count { font-weight:bold; color:#ff4081; }
+    .price { font-size: 18px; font-weight: bold; color: #ff4081; margin: 5px 0; }
+    .quantity { display:flex; justify-content:center; align-items:center; margin-top:5px; }
+    .quantity button { background:#e91e63; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s; }
+    .quantity button:hover { background:#ff4081; }
+    .quantity span { margin:0 10px; font-weight:bold; font-size:16px; }
+    .product button.add-cart { margin-top:10px; background:#e91e63; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; transition: background 0.3s, transform 0.2s; }
+    .product button.add-cart:hover { background:#ff4081; transform: scale(1.05); }
+    .cart { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; padding: 12px 18px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor:pointer; font-weight:bold; color:#e91e63; width:60px; height:60px; display:flex; justify-content:center; align-items:center; font-size:24px; }
+    .cart-count { position:absolute; top:-8px; right:-8px; background:#ff4081; color:white; width:20px; height:20px; border-radius:50%; font-size:12px; display:flex; justify-content:center; align-items:center; font-weight:bold; }
     .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; }
     .overlay-content { background:white; padding:25px; border-radius:15px; max-width:520px; width:90%; text-align:right; direction:rtl; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
     .overlay input, .overlay textarea { width:100%; padding:10px; margin:6px 0 12px; border-radius:8px; border:1px solid #ccc; font-size:15px; }
@@ -29,7 +34,7 @@
 
 <header>Fashionista</header>
 
-<div class="cart" onclick="showCart()">السلة: <span class="cart-count" id="cart-count">0</span></div>
+<div class="cart" onclick="showCart()">🛒<span class="cart-count" id="cart-count">0</span></div>
 
 <div class="products" id="products"></div>
 
@@ -92,16 +97,16 @@
 
 <script>
 const products = [
-    {name:"فستان سواريه 1", description:"فستان سواريه فخم يبرز أناقتك في كل مناسبة.", img:"53208.jpeg.webp"},
-    {name:"فستان سواريه 2", description:"فستان سواريه أنيق بتصميم عصري يجذب الأنظار.", img:"images (10).jpeg"},
-    {name:"فستان سواريه 3", description:"فستان سواريه كلاسيكي يضيف لمسة رقي وفخامة.", img:"images (11).jpeg"},
-    {name:"فستان سواريه 4", description:"فستان سواريه مميز يعكس أناقة لا مثيل لها.", img:"images (3).jpeg"},
-    {name:"فستان سواريه 5", description:"فستان سواريه بتصميم متقن يناسب كل المناسبات.", img:"images (4).jpeg"},
-    {name:"فستان سواريه 6", description:"فستان سواريه راقٍ يظهر شخصيتك الأنيقة.", img:"images (5).jpeg"},
-    {name:"فستان سواريه 7", description:"فستان سواريه يضفي لمسة فخامة على إطلالتك.", img:"images (6).jpeg"},
-    {name:"فستان سواريه 8", description:"فستان سواريه ساحر يلفت الأنظار بسهولة.", img:"images (7).jpeg"},
-    {name:"فستان سواريه 9", description:"فستان سواريه جذاب يعكس ذوق رفيع وأناقة.", img:"images (8).jpeg"},
-    {name:"فستان سواريه 10", description:"فستان سواريه متألق يمنحك حضوراً مميزاً.", img:"images (9).jpeg"}
+    {name:"فستان سواريه 1", description:"فستان سواريه فخم يبرز أناقتك في كل مناسبة.", img:"53208.jpeg.webp", price:1200},
+    {name:"فستان سواريه 2", description:"فستان سواريه أنيق بتصميم عصري يجذب الأنظار.", img:"images (10).jpeg", price:1500},
+    {name:"فستان سواريه 3", description:"فستان سواريه كلاسيكي يضيف لمسة رقي وفخامة.", img:"images (11).jpeg", price:1800},
+    {name:"فستان سواريه 4", description:"فستان سواريه مميز يعكس أناقة لا مثيل لها.", img:"images (3).jpeg", price:1400},
+    {name:"فستان سواريه 5", description:"فستان سواريه بتصميم متقن يناسب كل المناسبات.", img:"images (4).jpeg", price:1600},
+    {name:"فستان سواريه 6", description:"فستان سواريه راقٍ يظهر شخصيتك الأنيقة.", img:"images (5).jpeg", price:1700},
+    {name:"فستان سواريه 7", description:"فستان سواريه يضفي لمسة فخامة على إطلالتك.", img:"images (6).jpeg", price:1300},
+    {name:"فستان سواريه 8", description:"فستان سواريه ساحر يلفت الأنظار بسهولة.", img:"images (7).jpeg", price:1550},
+    {name:"فستان سواريه 9", description:"فستان سواريه جذاب يعكس ذوق رفيع وأناقة.", img:"images (8).jpeg", price:1650},
+    {name:"فستان سواريه 10", description:"فستان سواريه متألق يمنحك حضوراً مميزاً.", img:"images (9).jpeg", price:1750}
 ];
 
 let cart = [];
@@ -115,15 +120,33 @@ function renderProducts(){
             <img src="${p.img}" alt="${p.name}">
             <h3>${p.name}</h3>
             <p>${p.description}</p>
-            <button onclick="addToCart(${i})">إضافة للسلة</button>
+            <div class="price">${p.price} ج.م</div>
+            <div class="quantity">
+                <button onclick="decreaseQty(${i})">-</button>
+                <span id="qty-${i}">1</span>
+                <button onclick="increaseQty(${i})">+</button>
+            </div>
+            <button class="add-cart" onclick="addToCart(${i})">إضافة للسلة</button>
         `;
         container.appendChild(div);
     });
 }
 
+function increaseQty(index){
+    const span = document.getElementById(`qty-${index}`);
+    span.innerText = parseInt(span.innerText)+1;
+}
+
+function decreaseQty(index){
+    const span = document.getElementById(`qty-${index}`);
+    let val = parseInt(span.innerText);
+    if(val>1) span.innerText = val-1;
+}
+
 function addToCart(index){
-    cart.push(products[index]);
-    document.getElementById('cart-count').innerText = cart.length;
+    const qty = parseInt(document.getElementById(`qty-${index}`).innerText);
+    cart.push({...products[index], quantity: qty});
+    document.getElementById('cart-count').innerText = cart.reduce((sum,item)=>sum+item.quantity,0);
 }
 
 function showCart(){
@@ -131,7 +154,7 @@ function showCart(){
     overlay.style.display='flex';
     const items = document.getElementById('cart-items');
     items.innerHTML='';
-    cart.forEach(item => { items.innerHTML+=`<p>${item.name}</p>`; });
+    cart.forEach(item => { items.innerHTML+=`<p>${item.name} × ${item.quantity}</p>`; });
 }
 
 function closeCart(){ document.getElementById('cart-overlay').style.display='none'; }
@@ -164,7 +187,7 @@ function showReceipt(){
     const receipt = document.getElementById('receipt-overlay');
     const items = document.getElementById('receipt-items');
     items.innerHTML='';
-    cart.forEach(item => { items.innerHTML+=`<p><strong>${item.name}</strong>: ${item.description}</p>`; });
+    cart.forEach(item => { items.innerHTML+=`<p><strong>${item.name}</strong> × ${item.quantity}: ${item.description}</p>`; });
     receipt.style.display='flex';
     cart = [];
     document.getElementById('cart-count').innerText = '0';
