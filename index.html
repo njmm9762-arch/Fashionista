@@ -5,22 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fashionista</title>
 <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; background: #f9f9f9; }
-    header { background: #e91e63; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
-    .products { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 20px; padding: 20px; }
-    .product { background: white; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-    .product img { width: 100%; border-radius: 10px; }
-    .product h3 { margin: 10px 0 5px; }
-    .product p { margin: 5px 0; color: #555; font-style: italic; }
-    .product button { background: #e91e63; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-top: 5px; }
-    .cart { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; padding: 10px 15px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor:pointer; }
-    .cart-count { font-weight:bold; color:#e91e63; }
-    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
-    .overlay-content { background:white; padding:20px; border-radius:10px; max-width:500px; width:90%; text-align:right; direction:rtl; }
-    .overlay input, .overlay textarea { width:100%; padding:8px; margin:5px 0 10px; border-radius:5px; border:1px solid #ccc; }
-    .overlay button { background:#e91e63; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; margin-top:5px;}
-    .hidden { display:none; }
-    #receipt-overlay p { margin: 10px 0; }
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background: #f2f2f2; }
+    header { background: linear-gradient(90deg, #e91e63, #ff4081); color: white; padding: 25px; text-align: center; font-size: 30px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
+    .products { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 25px; padding: 25px; }
+    .product { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.15); transition: transform 0.3s, box-shadow 0.3s; }
+    .product:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
+    .product img { width: 100%; border-radius: 12px; height: 320px; object-fit: cover; transition: transform 0.3s; }
+    .product img:hover { transform: scale(1.05); }
+    .product h3 { margin: 12px 0 6px; font-size: 20px; color: #e91e63; }
+    .product p { margin: 6px 0; color: #555; font-style: italic; }
+    .product button { background: #e91e63; color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 16px; transition: background 0.3s, transform 0.2s; }
+    .product button:hover { background: #ff4081; transform: scale(1.05); }
+    .cart { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; padding: 12px 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor:pointer; font-weight:bold; color:#e91e63; }
+    .cart-count { font-weight:bold; color:#ff4081; }
+    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; }
+    .overlay-content { background:white; padding:25px; border-radius:15px; max-width:520px; width:90%; text-align:right; direction:rtl; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .overlay input, .overlay textarea { width:100%; padding:10px; margin:6px 0 12px; border-radius:8px; border:1px solid #ccc; font-size:15px; }
+    .overlay button { background:#e91e63; color:white; border:none; padding:12px 18px; border-radius:8px; cursor:pointer; margin-top:6px; font-size:16px; transition: background 0.3s, transform 0.2s; }
+    .overlay button:hover { background:#ff4081; transform: scale(1.05); }
 </style>
 </head>
 <body>
@@ -29,22 +31,19 @@
 
 <div class="cart" onclick="showCart()">السلة: <span class="cart-count" id="cart-count">0</span></div>
 
-<div class="products" id="products">
-    <!-- المنتجات هتضاف من الكود -->
-</div>
+<div class="products" id="products"></div>
 
-<!-- نافذة السلة والدفع -->
+<!-- نافذة السلة -->
 <div class="overlay" id="cart-overlay">
     <div class="overlay-content" id="cart-content">
         <h3>السلة</h3>
         <div id="cart-items"></div>
-        <p>الإجمالي: <span id="cart-total">0</span> ج.م</p>
         <button onclick="checkout()">اشتري الآن</button>
         <button onclick="closeCart()">إغلاق</button>
     </div>
 </div>
 
-<!-- نافذة الدفع النهائي -->
+<!-- نافذة الدفع -->
 <div class="overlay" id="checkout-overlay">
     <div class="overlay-content">
         <h3>طريقة الدفع</h3>
@@ -93,9 +92,16 @@
 
 <script>
 const products = [
-    {name:"فستان سواريه أنيق", description:"فستان سواريه فخم يبرز أناقتك في كل مناسبة.", img:"images/dress1.jpg"},
-    {name:"فستان سواريه عصري", description:"فستان سواريه أنيق بتصميم عصري يجذب الأنظار.", img:"images/dress2.jpg"},
-    {name:"فستان سواريه كلاسيكي", description:"فستان سواريه كلاسيكي يضيف لمسة رقي وفخامة.", img:"images/dress3.jpg"}
+    {name:"فستان سواريه 1", description:"فستان سواريه فخم يبرز أناقتك في كل مناسبة.", img:"53208.jpeg.webp"},
+    {name:"فستان سواريه 2", description:"فستان سواريه أنيق بتصميم عصري يجذب الأنظار.", img:"images (10).jpeg"},
+    {name:"فستان سواريه 3", description:"فستان سواريه كلاسيكي يضيف لمسة رقي وفخامة.", img:"images (11).jpeg"},
+    {name:"فستان سواريه 4", description:"فستان سواريه مميز يعكس أناقة لا مثيل لها.", img:"images (3).jpeg"},
+    {name:"فستان سواريه 5", description:"فستان سواريه بتصميم متقن يناسب كل المناسبات.", img:"images (4).jpeg"},
+    {name:"فستان سواريه 6", description:"فستان سواريه راقٍ يظهر شخصيتك الأنيقة.", img:"images (5).jpeg"},
+    {name:"فستان سواريه 7", description:"فستان سواريه يضفي لمسة فخامة على إطلالتك.", img:"images (6).jpeg"},
+    {name:"فستان سواريه 8", description:"فستان سواريه ساحر يلفت الأنظار بسهولة.", img:"images (7).jpeg"},
+    {name:"فستان سواريه 9", description:"فستان سواريه جذاب يعكس ذوق رفيع وأناقة.", img:"images (8).jpeg"},
+    {name:"فستان سواريه 10", description:"فستان سواريه متألق يمنحك حضوراً مميزاً.", img:"images (9).jpeg"}
 ];
 
 let cart = [];
@@ -125,17 +131,12 @@ function showCart(){
     overlay.style.display='flex';
     const items = document.getElementById('cart-items');
     items.innerHTML='';
-    cart.forEach((item, i)=>{
-        items.innerHTML+=`<p>${item.name}</p>`;
-    });
+    cart.forEach(item => { items.innerHTML+=`<p>${item.name}</p>`; });
 }
 
 function closeCart(){ document.getElementById('cart-overlay').style.display='none'; }
 
-function checkout(){
-    closeCart();
-    document.getElementById('checkout-overlay').style.display='flex';
-}
+function checkout(){ closeCart(); document.getElementById('checkout-overlay').style.display='flex'; }
 
 function closeCheckout(){ document.getElementById('checkout-overlay').style.display='none'; }
 
@@ -163,17 +164,13 @@ function showReceipt(){
     const receipt = document.getElementById('receipt-overlay');
     const items = document.getElementById('receipt-items');
     items.innerHTML='';
-    cart.forEach(item => {
-        items.innerHTML+=`<p><strong>${item.name}</strong>: ${item.description}</p>`;
-    });
+    cart.forEach(item => { items.innerHTML+=`<p><strong>${item.name}</strong>: ${item.description}</p>`; });
     receipt.style.display='flex';
     cart = [];
     document.getElementById('cart-count').innerText = '0';
 }
 
-function closeReceipt(){
-    document.getElementById('receipt-overlay').style.display='none';
-}
+function closeReceipt(){ document.getElementById('receipt-overlay').style.display='none'; }
 
 renderProducts();
 </script>
