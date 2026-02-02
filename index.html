@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Fashionista | تسوقي بأناقة</title>
 
+<!-- مشاركة واتساب / تليجرام -->
 <meta property="og:title" content="Fashionista - أناقة السهرة في مكان واحد">
 <meta property="og:description" content="اختاري تصميمك المميز واطلبي بسهولة، دفع آمن ومتابعة حتى باب البيت">
 <meta property="og:image" content="images (2).jpeg">
@@ -33,34 +34,34 @@ border-radius:50%;padding:2px 6px;font-size:14px
 
 /* المنتجات */
 .products{
-display:flex;
-flex-direction:column;
+display:grid;
+grid-template-columns:1fr; /* المنتجات تحت بعض على الطول */
 gap:15px;
 padding:15px
 }
 .product{
 background:#fff;border-radius:12px;
 padding:10px;position:relative;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
+box-shadow:0 4px 10px rgba(0,0,0,.1);
 overflow:hidden;
 }
 .product img{
 width:100%;
-max-height:250px; /* حجم مناسب للهواتف */
 border-radius:10px;
+max-height:250px;
 object-fit:cover;
-transition: transform 0.5s ease-in-out;
+transition:transform 0.5s;
 }
 
 /* وصف المنتج */
 .desc{
 background:#fff3a0;
-margin:10px 0;
+margin:8px 0;
 padding:10px;
 border-radius:6px;
 font-weight:bold;
 color:#444;
-font-size:18px
+font-size:18px;
 }
 .price{
 font-size:20px;font-weight:bold;margin:6px 0
@@ -69,12 +70,12 @@ font-size:20px;font-weight:bold;margin:6px 0
 display:flex;gap:15px;align-items:center;margin-bottom:10px
 }
 .qty button{
-width:45px;
-height:45px;
+width:45px;height:45px;
 border:none;border-radius:50%;
 background:#111;color:#fff;
-font-size:22px;cursor:pointer;
-transition:all .2s;
+font-size:22px;
+cursor:pointer;
+transition:all .2s
 }
 .qty button:hover{transform:scale(1.1);}
 
@@ -153,6 +154,7 @@ input,textarea{font-size:18px;padding:14px}
 <!-- السلة والدفع -->
 <div id="cartBox">
 <h2>إتمام الطلب</h2>
+
 <div id="cartItems"></div>
 
 <div class="section">
@@ -166,27 +168,13 @@ input,textarea{font-size:18px;padding:14px}
 <textarea placeholder="معلومات الدفع / تعليق" id="paymentInfo"></textarea>
 </div>
 
-<div class="section">
-<textarea placeholder="المحافظة" id="province"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="المركز" id="center"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="الحي" id="district"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="اسم الشارع" id="street"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="رقم العمارة" id="building"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="الدور" id="floor"></textarea>
-</div>
-<div class="section">
-<textarea placeholder="علامة مميزة" id="landmark"></textarea>
-</div>
+<div class="section"><textarea placeholder="المحافظة" id="province"></textarea></div>
+<div class="section"><textarea placeholder="المركز" id="center"></textarea></div>
+<div class="section"><textarea placeholder="الحي" id="district"></textarea></div>
+<div class="section"><textarea placeholder="اسم الشارع" id="street"></textarea></div>
+<div class="section"><textarea placeholder="رقم العمارة" id="building"></textarea></div>
+<div class="section"><textarea placeholder="الدور" id="floor"></textarea></div>
+<div class="section"><textarea placeholder="علامة مميزة" id="landmark"></textarea></div>
 
 <button class="confirm" onclick="showReceipt()">تأكيد الطلب</button>
 
