@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Fashionista | تسوقي بأناقة</title>
 
-<!-- مشاركة واتساب / تليجرام -->
 <meta property="og:title" content="Fashionista - أناقة السهرة في مكان واحد">
 <meta property="og:description" content="اختاري تصميمك المميز واطلبي بسهولة، دفع آمن ومتابعة حتى باب البيت">
 <meta property="og:image" content="images (2).jpeg">
@@ -47,7 +46,7 @@ overflow:hidden;
 }
 .product img{
 width:100%;
-height:auto;
+max-height:250px; /* حجم مناسب للهواتف */
 border-radius:10px;
 object-fit:cover;
 transition: transform 0.5s ease-in-out;
@@ -61,10 +60,10 @@ padding:10px;
 border-radius:6px;
 font-weight:bold;
 color:#444;
-font-size:16px
+font-size:18px
 }
 .price{
-font-size:18px;font-weight:bold;margin:6px 0
+font-size:20px;font-weight:bold;margin:6px 0
 }
 .qty{
 display:flex;gap:15px;align-items:center;margin-bottom:10px
@@ -87,7 +86,7 @@ background:#e91e63;
 color:#fff;border:none;
 padding:15px;border-radius:8px;
 cursor:pointer;
-font-size:18px;
+font-size:20px;
 transition:all .2s;
 position:relative;
 z-index:1;
@@ -108,13 +107,13 @@ padding:20px;transition:.4s;overflow-y:auto
 .section input, .section textarea{
 width:100%;padding:12px;
 margin-top:6px;border-radius:6px;
-border:1px solid #ccc;font-size:16px
+border:1px solid #ccc;font-size:18px
 }
 .confirm{
 background:#111;color:#fff;
 padding:15px;border:none;
 width:100%;margin-top:10px;
-border-radius:8px;font-size:18px;cursor:pointer;
+border-radius:8px;font-size:20px;cursor:pointer;
 transition:all .2s;
 }
 .confirm:hover{background:#333;transform:scale(1.02);}
@@ -124,19 +123,20 @@ transition:all .2s;
 display:none;background:#fff;
 padding:20px;border-radius:12px;margin-top:15px;
 box-shadow:0 4px 12px rgba(0,0,0,.1);
-font-size:16px;
+font-size:18px;
 line-height:1.5;
 }
 #receipt img{height:50px}
 
 /* Responsive للموبايل */
 @media(max-width:600px){
-.desc{font-size:18px}
-.price{font-size:20px}
+.desc{font-size:16px}
+.price{font-size:18px}
 .qty button{width:50px;height:50px;font-size:24px}
 .add{padding:18px;font-size:20px}
 input,textarea{font-size:18px;padding:14px}
 .confirm{padding:18px;font-size:20px}
+.product img{max-height:200px;}
 }
 </style>
 </head>
