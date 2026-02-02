@@ -6,7 +6,7 @@
 
 <!-- مشاركة واتساب / تليجرام -->
 <meta property="og:title" content="Fashionista - أناقة السهرة في مكان واحد">
-<meta property="og:description" content="اختاري تصميمك المميز واطلبي بسهولة، دفع آمن ومتابعة حتى باب البيت">
+<meta property="og:description" content="اختاري تصميمك المميز بسهولة، دفع آمن ومتابعة حتى باب البيت. موقع Fashionista يقدم أفضل تشكيلات السهرة مع خدمات سريعة وآمنة">
 <meta property="og:image" content="images (2).jpeg">
 <meta property="og:type" content="website">
 
@@ -20,22 +20,23 @@ background:#111;color:#fff;
 display:flex;align-items:center;
 padding:10px 15px
 }
-header img{height:50px}
+header img{height:70px} /* تكبير اللوجو */
 .cart-icon{
 margin-right:auto;
 position:relative;
-cursor:pointer
+cursor:pointer;
+font-size:30px; /* تكبير أيقونة السلة */
 }
 .cart-icon span{
-position:absolute;top:-5px;left:-8px;
+position:absolute;top:-10px;left:-10px;
 background:#e91e63;color:#fff;
-border-radius:50%;padding:2px 6px;font-size:14px
+border-radius:50%;padding:5px 10px;font-size:16px
 }
 
 /* المنتجات */
 .products{
 display:grid;
-grid-template-columns:1fr; /* المنتجات تحت بعض */
+grid-template-columns:1fr; /* تحت بعض */
 gap:15px;
 padding:15px
 }
@@ -55,23 +56,23 @@ transition:transform 0.5s;
 .desc{
 background:#fff3a0;
 margin:8px 0;
-padding:10px;
+padding:12px;
 border-radius:6px;
 font-weight:bold;
 color:#444;
-font-size:18px;
+font-size:22px; /* تكبير النص */
 }
 .price{
-font-size:20px;font-weight:bold;margin:6px 0
+font-size:22px;font-weight:bold;margin:6px 0
 }
 .qty{
 display:flex;gap:15px;align-items:center;margin-bottom:10px
 }
 .qty button{
-width:45px;height:45px;
+width:50px;height:50px;
 border:none;border-radius:50%;
 background:#111;color:#fff;
-font-size:22px;
+font-size:24px;
 cursor:pointer;
 transition:all .2s
 }
@@ -83,9 +84,9 @@ margin-top:8px;
 width:100%;
 background:#e91e63;
 color:#fff;border:none;
-padding:15px;border-radius:8px;
+padding:18px;border-radius:8px;
 cursor:pointer;
-font-size:20px;
+font-size:22px; /* تكبير زر الإضافة */
 transition:all .2s;
 position:relative;
 z-index:1;
@@ -104,15 +105,15 @@ padding:20px;transition:.4s;overflow-y:auto
 /* الدفع */
 .section{margin-top:15px}
 .section input, .section textarea{
-width:100%;padding:12px;
+width:100%;padding:14px;
 margin-top:6px;border-radius:6px;
-border:1px solid #ccc;font-size:18px
+border:1px solid #ccc;font-size:20px
 }
 .confirm{
 background:#111;color:#fff;
-padding:15px;border:none;
+padding:18px;border:none;
 width:100%;margin-top:10px;
-border-radius:8px;font-size:20px;cursor:pointer;
+border-radius:8px;font-size:22px;cursor:pointer;
 transition:all .2s;
 }
 .confirm:hover{background:#333;transform:scale(1.02);}
@@ -122,20 +123,22 @@ transition:all .2s;
 display:none;background:#fff;
 padding:20px;border-radius:12px;margin-top:15px;
 box-shadow:0 4px 12px rgba(0,0,0,.1);
-font-size:18px;
+font-size:20px;
 line-height:1.5;
 }
-#receipt img{height:50px}
+#receipt img{height:60px}
 
 /* Responsive للموبايل */
 @media(max-width:600px){
-.desc{font-size:16px}
-.price{font-size:18px}
-.qty button{width:50px;height:50px;font-size:24px}
-.add{padding:18px;font-size:20px}
-input,textarea{font-size:18px;padding:14px}
-.confirm{padding:18px;font-size:20px}
-.product img{max-height:200px;}
+.desc{font-size:20px}
+.price{font-size:20px}
+.qty button{width:55px;height:55px;font-size:26px}
+.add{padding:20px;font-size:22px}
+input,textarea{font-size:20px;padding:16px}
+.confirm{padding:20px;font-size:22px}
+.product img{max-height:220px;}
+header img{height:60px}
+.cart-icon{font-size:28px}
 }
 </style>
 </head>
@@ -143,7 +146,7 @@ input,textarea{font-size:18px;padding:14px}
 <body>
 
 <header>
-<img src="images (2).jpeg">
+<img src="images (2).jpeg" alt="Fashionista Logo">
 <div class="cart-icon" onclick="openCart()">🛒<span id="cartCount">0</span></div>
 </header>
 
@@ -178,7 +181,7 @@ input,textarea{font-size:18px;padding:14px}
 <button class="confirm" onclick="showReceipt()">تأكيد الطلب</button>
 
 <div id="receipt">
-<img src="images (2).jpeg">
+<img src="images (2).jpeg" alt="Fashionista Logo">
 <h3>وصل الطلب</h3>
 <div id="receiptData"></div>
 <button onclick="window.print()">حفظ الوصل</button>
@@ -187,7 +190,7 @@ input,textarea{font-size:18px;padding:14px}
 </div>
 
 <script>
-// بيانات المنتجات (صورك كما هي)
+// بيانات المنتجات (كما هي)
 const data=[
 {img:"53208.jpeg.webp",desc:"تصميم أنيق يبرز جمال الإطلالة ويمنحك حضورًا مميزًا",price:1200},
 {img:"images (10).jpeg",desc:"قصة فاخرة تناسب المناسبات الخاصة والسهرات",price:1350},
@@ -204,7 +207,6 @@ const data=[
 let cart=[];
 const products=document.getElementById("products");
 
-// عرض المنتجات كما هي
 data.forEach((p,i)=>{
 products.innerHTML+=`
 <div class="product">
@@ -220,14 +222,12 @@ products.innerHTML+=`
 </div>`;
 });
 
-// الكمية
 function changeQty(i,v){
 let s=document.getElementById("q"+i);
 let n=Math.max(1,+s.innerText+v);
 s.innerText=n;
 }
 
-// حركة الصورة للسلة
 function addCart(i){
 let img=document.getElementById("img"+i);
 let clone=img.cloneNode(true);
@@ -248,7 +248,6 @@ cart.push({...data[i],qty:q});
 document.getElementById("cartCount").innerText=cart.length;
 }
 
-// فتح السلة
 function openCart(){
 document.getElementById("cartBox").classList.add("active");
 let html="";
@@ -262,7 +261,6 @@ html+=`<b>الإجمالي: ${total} ج.م</b>`;
 document.getElementById("cartItems").innerHTML=html;
 }
 
-// عرض الوصل
 function showReceipt(){
 let payment=document.getElementById("paymentInfo").value;
 let province=document.getElementById("province").value;
