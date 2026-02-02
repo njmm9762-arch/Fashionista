@@ -35,7 +35,7 @@ border-radius:50%;padding:2px 6px;font-size:14px
 /* المنتجات */
 .products{
 display:grid;
-grid-template-columns:1fr; /* المنتجات تحت بعض على الطول */
+grid-template-columns:1fr; /* المنتجات تحت بعض */
 gap:15px;
 padding:15px
 }
@@ -48,8 +48,6 @@ overflow:hidden;
 .product img{
 width:100%;
 border-radius:10px;
-max-height:250px;
-object-fit:cover;
 transition:transform 0.5s;
 }
 
@@ -168,6 +166,7 @@ input,textarea{font-size:18px;padding:14px}
 <textarea placeholder="معلومات الدفع / تعليق" id="paymentInfo"></textarea>
 </div>
 
+<!-- أسئلة العنوان كل خانة لوحدها -->
 <div class="section"><textarea placeholder="المحافظة" id="province"></textarea></div>
 <div class="section"><textarea placeholder="المركز" id="center"></textarea></div>
 <div class="section"><textarea placeholder="الحي" id="district"></textarea></div>
@@ -188,6 +187,7 @@ input,textarea{font-size:18px;padding:14px}
 </div>
 
 <script>
+// بيانات المنتجات (صورك كما هي)
 const data=[
 {img:"53208.jpeg.webp",desc:"تصميم أنيق يبرز جمال الإطلالة ويمنحك حضورًا مميزًا",price:1200},
 {img:"images (10).jpeg",desc:"قصة فاخرة تناسب المناسبات الخاصة والسهرات",price:1350},
@@ -202,9 +202,9 @@ const data=[
 ];
 
 let cart=[];
-
 const products=document.getElementById("products");
 
+// عرض المنتجات كما هي
 data.forEach((p,i)=>{
 products.innerHTML+=`
 <div class="product">
@@ -220,6 +220,7 @@ products.innerHTML+=`
 </div>`;
 });
 
+// الكمية
 function changeQty(i,v){
 let s=document.getElementById("q"+i);
 let n=Math.max(1,+s.innerText+v);
@@ -247,6 +248,7 @@ cart.push({...data[i],qty:q});
 document.getElementById("cartCount").innerText=cart.length;
 }
 
+// فتح السلة
 function openCart(){
 document.getElementById("cartBox").classList.add("active");
 let html="";
@@ -260,6 +262,7 @@ html+=`<b>الإجمالي: ${total} ج.م</b>`;
 document.getElementById("cartItems").innerHTML=html;
 }
 
+// عرض الوصل
 function showReceipt(){
 let payment=document.getElementById("paymentInfo").value;
 let province=document.getElementById("province").value;
