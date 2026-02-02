@@ -2,104 +2,139 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Fashionista | تسوقي بأناقة</title>
-
-<!-- مشاركة واتساب / تليجرام -->
-<meta property="og:title" content="Fashionista - أناقة السهرة في مكان واحد">
-<meta property="og:description" content="اختاري تصميمك المميز واطلبي بسهولة، دفع آمن ومتابعة حتى باب البيت">
+<title>Fashionista</title>
+<meta property="og:title" content="Fashionista - أناقة السهرة">
+<meta property="og:description" content="اختاري تصميمك المميز واطلبي بسهولة مع متابعة حتى باب البيت">
 <meta property="og:image" content="images (2).jpeg">
-<meta property="og:type" content="website">
 
 <style>
 *{box-sizing:border-box;font-family:Tahoma}
-body{margin:0;background:#f6f6f6}
+body{margin:0;background:#f4f4f4}
 
 /* الهيدر */
 header{
 background:#111;color:#fff;
 display:flex;align-items:center;
-padding:10px 20px
+padding:10px 15px
 }
 header img{height:45px}
-.cart-icon{
-margin-right:auto;
-position:relative;
-cursor:pointer
+.cart{
+margin-right:auto;cursor:pointer;position:relative
 }
-.cart-icon span{
-position:absolute;top:-5px;left:-8px;
+.cart span{
+position:absolute;top:-6px;left:-8px;
 background:#e91e63;color:#fff;
 border-radius:50%;padding:2px 6px;font-size:12px
 }
 
-/* المنتجات */
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:15px;padding:20px
-}
+/* المنتجات بالطول */
+.products{padding:15px}
 .product{
-background:#fff;border-radius:12px;
-padding:10px;position:relative;
-box-shadow:0 4px 10px rgba(0,0,0,.1)
+background:#fff;
+border-radius:12px;
+padding:10px;
+margin-bottom:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.1)
 }
-.product img{width:100%;border-radius:10px}
+.product img{
+width:100%;
+border-radius:10px
+}
 .desc{
 background:#fff3a0;
-margin:8px 0;
-padding:8px;
-border-radius:6px;
-font-weight:bold;
-color:#444
+padding:10px;
+border-radius:8px;
+margin:10px 0;
+font-weight:bold
 }
-.price{font-size:18px;font-weight:bold;margin:6px 0}
+.price{
+font-size:18px;
+font-weight:bold
+}
 .qty{
-display:flex;gap:10px;align-items:center
+display:flex;
+align-items:center;
+gap:15px;
+margin:10px 0
 }
 .qty button{
-width:30px;height:30px;
+width:35px;height:35px;
 border:none;border-radius:50%;
 background:#111;color:#fff;
 font-size:18px;cursor:pointer
 }
 .add{
-margin-top:8px;
 width:100%;
-background:#e91e63;
-color:#fff;border:none;
-padding:10px;border-radius:8px;
-cursor:pointer
+padding:12px;
+border:none;
+border-radius:8px;
+background:#e91e63;color:#fff;font-size:16px;cursor:pointer
 }
 
-/* السلة */
-#cartBox{
-position:fixed;top:0;left:-100%;
-width:100%;height:100%;
-background:#fff;z-index:10;
-padding:20px;transition:.4s
+/* أنيميشن */
+.fly{
+position:fixed;
+z-index:9999;
+transition:all .7s ease;
+border-radius:10px
 }
-#cartBox.active{left:0}
 
-/* الدفع */
-.section{margin-top:15px}
+/* السلة والدفع */
+.section{
+display:none;
+padding:15px
+}
+.section.active{display:block}
 input,textarea{
-width:100%;padding:10px;
-margin-top:6px;border-radius:6px;
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:6px;
 border:1px solid #ccc
 }
-.confirm{
+button.confirm{
+width:100%;
+margin-top:15px;
+padding:14px;
 background:#111;color:#fff;
-padding:12px;border:none;
-width:100%;margin-top:10px;
+border:none;
 border-radius:8px;font-size:16px
 }
 
 /* الوصل */
 #receipt{
-display:none;background:#fff;
-padding:20px;border-radius:12px
+background:#fff;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+margin-top:15px
 }
-#receipt img{height:50px}
+#receipt img{height:45px;margin-bottom:10px}
+.item{border-bottom:1px dashed #ccc;padding:8px 0}
+.total{font-weight:bold;margin-top:10px}
+
+/* أزرار التاب */
+.tabs button{
+padding:10px 15px;
+margin:5px;
+border:none;
+border-radius:6px;
+background:#111;color:#fff;
+cursor:pointer;
+}
+.tabs button.active{background:#e91e63}
+
+/* اهتزاز السلة */
+.cart.shake{
+animation:shake .4s
+}
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-4px)}
+50%{transform:translateX(4px)}
+75%{transform:translateX(-4px)}
+100%{transform:translateX(0)}
+}
 </style>
 </head>
 
@@ -107,104 +142,160 @@ padding:20px;border-radius:12px
 
 <header>
 <img src="images (2).jpeg">
-<div class="cart-icon" onclick="openCart()">🛒<span id="cartCount">0</span></div>
+<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
 </header>
 
+<!-- أزرار التنقل -->
+<div class="tabs" style="padding:10px;text-align:center">
+<button class="tab-btn active" onclick="showTab('productsSec',this)">المنتجات</button>
+<button class="tab-btn" onclick="showTab('cartSec',this)">الدفع</button>
+<button class="tab-btn" onclick="showTab('receiptSec',this)">الوصل</button>
+</div>
+
+<!-- المنتجات -->
+<div id="productsSec" class="section active">
 <div class="products" id="products"></div>
+</div>
 
-<!-- السلة والدفع -->
-<div id="cartBox">
+<!-- الدفع -->
+<div id="cartSec" class="section">
 <h2>إتمام الطلب</h2>
-
 <div id="cartItems"></div>
 
-<div class="section">
-<b>الدفع عبر فودافون كاش</b>
-<p>برجاء تحويل المبلغ على الرقم التالي ثم رفع صورة واضحة لعملية الدفع</p>
+<p><b>الدفع عبر فودافون كاش</b></p>
+<p>يرجى التحويل على الرقم التالي ثم رفع صورة واضحة لعملية الدفع</p>
 <b>01206561893</b>
 
-<input type="file">
-<textarea placeholder="معلومات الدفع / تعليق"></textarea>
+<input type="file" id="paymentImg">
+<textarea placeholder="معلومات الدفع / تعليق" id="paymentInfo"></textarea>
+
+<h3>العنوان الكامل بالتفصيل</h3>
+<textarea placeholder="المحافظة - المركز - الشارع - العمارة - الدور - علامة مميزة" id="address"></textarea>
+
+<button class="confirm" onclick="confirmOrder()">تأكيد الطلب</button>
 </div>
 
-<div class="section">
-<b>العنوان الكامل بالتفصيل</b>
-<textarea placeholder="المحافظة - المركز - الحي - اسم الشارع - رقم العمارة - الدور - علامة مميزة"></textarea>
-</div>
-
-<button class="confirm" onclick="showReceipt()">تأكيد الطلب</button>
-
-<div id="receipt">
-<img src="images (2).jpeg">
-<h3>وصل الطلب</h3>
-<div id="receiptData"></div>
+<!-- الوصل -->
+<div id="receiptSec" class="section">
+<div id="receipt"></div>
 <button onclick="window.print()">حفظ الوصل</button>
 </div>
 
-</div>
-
 <script>
-const data=[
-{img:"53208.jpeg.webp",desc:"تصميم أنيق يبرز جمال الإطلالة ويمنحك حضورًا مميزًا",price:1200},
-{img:"images (10).jpeg",desc:"قصة فاخرة تناسب المناسبات الخاصة والسهرات",price:1350},
-{img:"images (11).jpeg",desc:"تفاصيل راقية تعكس الذوق الرفيع",price:1400},
-{img:"images (3).jpeg",desc:"إطلالة جذابة تجمع بين البساطة والفخامة",price:1250},
-{img:"images (4).jpeg",desc:"تصميم عصري يناسب كل المناسبات الراقية",price:1500},
-{img:"images (5).jpeg",desc:"لمسة أنثوية ناعمة تزيدك تألقًا",price:1100},
-{img:"images (6).jpeg",desc:"ستايل فخم يمنحك ثقة وأناقة",price:1450},
-{img:"images (7).jpeg",desc:"تصميم مميز لمحبات التميز",price:1300},
-{img:"images (8).jpeg",desc:"تفصيل جذاب يلفت الأنظار",price:1550},
-{img:"images (9).jpeg",desc:"اختيار مثالي لإطلالة لا تُنسى",price:1600}
+const productsData=[
+{img:"53208.jpeg.webp",desc:"تصميم أنيق يمنحك حضورًا راقيًا",price:1200},
+{img:"images (10).jpeg",desc:"قصة فاخرة لإطلالة مميزة",price:1350},
+{img:"images (11).jpeg",desc:"تفاصيل راقية تلفت الأنظار",price:1400},
+{img:"images (3).jpeg",desc:"لمسة أنثوية ناعمة",price:1250},
+{img:"images (4).jpeg",desc:"تصميم عصري أنيق",price:1500},
+{img:"images (5).jpeg",desc:"أناقة بسيطة وجذابة",price:1100},
+{img:"images (6).jpeg",desc:"إطلالة فخمة وواثقة",price:1450},
+{img:"images (7).jpeg",desc:"ستايل مميز لعشاق التميز",price:1300},
+{img:"images (8).jpeg",desc:"تفصيل أنيق يخطف الأنظار",price:1550},
+{img:"images (9).jpeg",desc:"اختيار مثالي لمناسبة خاصة",price:1600}
 ];
 
 let cart=[];
 
-const products=document.getElementById("products");
-
-data.forEach((p,i)=>{
-products.innerHTML+=`
+const productsBox=document.getElementById("products");
+productsData.forEach((p,i)=>{
+productsBox.innerHTML+=`
 <div class="product">
 <img src="${p.img}">
 <div class="desc">${p.desc}</div>
-<div class="price">${p.price} ج.م</div>
+<div class="price"><span id="price${i}">${p.price}</span> ج.م</div>
 <div class="qty">
-<button onclick="changeQty(${i},-1)">-</button>
+<button onclick="qty(${i},-1)">−</button>
 <span id="q${i}">1</span>
-<button onclick="changeQty(${i},1)">+</button>
+<button onclick="qty(${i},1)">+</button>
 </div>
-<button class="add" onclick="addCart(${i})">إضافة للسلة</button>
+<button class="add" onclick="add(${i})">إضافة للسلة</button>
 </div>`;
 });
 
-function changeQty(i,v){
-let s=document.getElementById("q"+i);
-let n=Math.max(1,+s.innerText+v);
-s.innerText=n;
+function qty(i,v){
+let q=document.getElementById("q"+i);
+let n=Math.max(1,+q.innerText+v);
+q.innerText=n;
+document.getElementById("price"+i).innerText=n*productsData[i].price;
 }
 
-function addCart(i){
-let q=+document.getElementById("q"+i).innerText;
-cart.push({...data[i],qty:q});
-document.getElementById("cartCount").innerText=cart.length;
+function add(i){
+let img=document.querySelectorAll(".product img")[i];
+let fly=img.cloneNode();
+let r=img.getBoundingClientRect();
+fly.className="fly";
+fly.style.top=r.top+"px";
+fly.style.left=r.left+"px";
+fly.style.width=r.width+"px";
+document.body.appendChild(fly);
+
+let cartIcon=document.querySelector(".cart");
+let c=cartIcon.getBoundingClientRect();
+
+setTimeout(()=>{
+fly.style.top=c.top+"px";
+fly.style.left=c.left+"px";
+fly.style.width="30px";
+fly.style.opacity=0;
+},10);
+
+setTimeout(()=>{
+fly.remove();
+cartIcon.classList.add("shake");
+setTimeout(()=>cartIcon.classList.remove("shake"),400);
+},700);
+
+cart.push({...productsData[i],qty:+document.getElementById("q"+i).innerText});
+document.getElementById("count").innerText=cart.length;
+updateCartDisplay();
 }
 
-function openCart(){
-document.getElementById("cartBox").classList.add("active");
-let html="";
-let total=0;
-cart.forEach(c=>{
-let t=c.qty*c.price;
+function updateCartDisplay(){
+let html="",total=0;
+cart.forEach(p=>{
+let t=p.qty*p.price;
 total+=t;
-html+=`<p>${c.desc} × ${c.qty} = ${t} ج.م</p>`;
+html+=`<p>${p.desc} × ${p.qty} = ${t} ج.م</p>`;
 });
 html+=`<b>الإجمالي: ${total} ج.م</b>`;
 document.getElementById("cartItems").innerHTML=html;
 }
 
-function showReceipt(){
-document.getElementById("receipt").style.display="block";
-document.getElementById("receiptData").innerHTML=document.getElementById("cartItems").innerHTML;
+function confirmOrder(){
+let payment=document.getElementById("paymentInfo").value;
+let address=document.getElementById("address").value;
+let receipt=document.getElementById("receipt");
+let total=0;
+let html=`<img src="images (2).jpeg"><h3>وصل الطلب</h3>`;
+cart.forEach(p=>{
+let t=p.qty*p.price;
+total+=t;
+html+=`<div class="item">${p.desc}<br>الكمية: ${p.qty} — ${t} ج.م</div>`;
+});
+html+=`<div class="total">الإجمالي: ${total} ج.م</div>`;
+html+=`<p><b>معلومات الدفع:</b> ${payment}</p>`;
+html+=`<p><b>العنوان:</b> ${address}</p>`;
+receipt.innerHTML=html;
+
+// مشاركة واتساب تلقائي
+let msg="طلب جديد من Fashionista:%0A";
+cart.forEach(p=>{msg+=`${p.desc} × ${p.qty}%0A`;});
+msg+=`الإجمالي: ${total} ج.م`;
+window.open("https://wa.me/201206561893?text="+msg,"_blank");
+
+// تحويل إلى تاب الوصل
+showTab('receiptSec',document.querySelectorAll('.tab-btn')[2]);
 }
+
+// تبديل التابات
+function showTab(id,btn){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+function openCart(){showTab('cartSec',document.querySelectorAll('.tab-btn')[1]);}
 </script>
 
 </body>
