@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashionista</title>
+<style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background: #f9f9f9; }
+    header { background: #e91e63; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
+    .products { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 20px; padding: 20px; }
+    .product { background: white; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
+    .product img { width: 100%; border-radius: 10px; }
+    .product h3 { margin: 10px 0 5px; }
+    .product p { margin: 5px 0; color: #555; font-style: italic; }
+    .product button { background: #e91e63; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-top: 5px; }
+    .cart { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; padding: 10px 15px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor:pointer; }
+    .cart-count { font-weight:bold; color:#e91e63; }
+    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
+    .overlay-content { background:white; padding:20px; border-radius:10px; max-width:500px; width:90%; text-align:right; direction:rtl; }
+    .overlay input, .overlay textarea { width:100%; padding:8px; margin:5px 0 10px; border-radius:5px; border:1px solid #ccc; }
+    .overlay button { background:#e91e63; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; margin-top:5px;}
+    .hidden { display:none; }
+    #receipt-overlay p { margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<header>Fashionista</header>
+
+<div class="cart" onclick="showCart()">السلة: <span class="cart-count" id="cart-count">0</span></div>
+
+<div class="products" id="products">
+    <!-- المنتجات هتضاف من الكود -->
+</div>
+
+<!-- نافذة السلة والدفع -->
+<div class="overlay" id="cart-overlay">
+    <div class="overlay-content" id="cart-content">
+        <h3>السلة</h3>
+        <div id="cart-items"></div>
+        <p>الإجمالي: <span id="cart-total">0</span> ج.م</p>
+        <button onclick="checkout()">اشتري الآن</button>
+        <button onclick="closeCart()">إغلاق</button>
+    </div>
+</div>
+
+<!-- نافذة الدفع النهائي -->
+<div class="overlay" id="checkout-overlay">
+    <div class="overlay-content">
+        <h3>طريقة الدفع</h3>
+        <p>للدفع استخدم فودافون كاش على الرقم: <strong>01206561893</strong></p>
+        <p>بعد الدفع، أدخل معلومات الدفع في خانة التعليق ثم اضغط "شحن الآن".</p>
+        <textarea id="payment-info" placeholder="أدخل معلومات الدفع هنا"></textarea>
+        <button onclick="processPayment()">شحن الآن</button>
+        <button onclick="closeCheckout()">إغلاق</button>
+    </div>
+</div>
+
+<!-- نافذة مراجعة البيانات -->
+<div class="overlay" id="review-overlay">
+    <div class="overlay-content">
+        <h3>جاري مراجعة البيانات...</h3>
+        <button onclick="askAddress()">التالي</button>
+    </div>
+</div>
+
+<!-- نافذة إدخال العنوان -->
+<div class="overlay" id="address-overlay">
+    <div class="overlay-content">
+        <h3>أدخل العنوان الكامل للشحن</h3>
+        <input type="text" id="full-address" placeholder="العنوان الكامل">
+        <button onclick="confirmOrder()">تأكيد الطلب</button>
+    </div>
+</div>
+
+<!-- نافذة التأكيد النهائي -->
+<div class="overlay" id="confirmation-overlay">
+    <div class="overlay-content">
+        <h3>تم تأكيد طلبك</h3>
+        <p>خلال يوم سيتم شحن طلبك</p>
+        <button onclick="showReceipt()">عرض الوصل</button>
+    </div>
+</div>
+
+<!-- نافذة الوصل النهائي -->
+<div class="overlay" id="receipt-overlay">
+    <div class="overlay-content">
+        <h3>وصل الطلب</h3>
+        <div id="receipt-items"></div>
+        <button onclick="closeReceipt()">حسناً</button>
+    </div>
+</div>
+
+<script>
+const products = [
+    {name:"فستان سواريه أنيق", description:"فستان سواريه فخم يبرز أناقتك في كل مناسبة.", img:"images/dress1.jpg"},
+    {name:"فستان سواريه عصري", description:"فستان سواريه أنيق بتصميم عصري يجذب الأنظار.", img:"images/dress2.jpg"},
+    {name:"فستان سواريه كلاسيكي", description:"فستان سواريه كلاسيكي يضيف لمسة رقي وفخامة.", img:"images/dress3.jpg"}
+];
+
+let cart = [];
+
+function renderProducts(){
+    const container = document.getElementById('products');
+    products.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.classList.add('product');
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>${p.description}</p>
+            <button onclick="addToCart(${i})">إضافة للسلة</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addToCart(index){
+    cart.push(products[index]);
+    document.getElementById('cart-count').innerText = cart.length;
+}
+
+function showCart(){
+    const overlay = document.getElementById('cart-overlay');
+    overlay.style.display='flex';
+    const items = document.getElementById('cart-items');
+    items.innerHTML='';
+    cart.forEach((item, i)=>{
+        items.innerHTML+=`<p>${item.name}</p>`;
+    });
+}
+
+function closeCart(){ document.getElementById('cart-overlay').style.display='none'; }
+
+function checkout(){
+    closeCart();
+    document.getElementById('checkout-overlay').style.display='flex';
+}
+
+function closeCheckout(){ document.getElementById('checkout-overlay').style.display='none'; }
+
+function processPayment(){
+    const info = document.getElementById('payment-info').value;
+    if(info.trim() === ''){ alert('من فضلك أدخل معلومات الدفع'); return;}
+    closeCheckout();
+    document.getElementById('review-overlay').style.display='flex';
+}
+
+function askAddress(){
+    document.getElementById('review-overlay').style.display='none';
+    document.getElementById('address-overlay').style.display='flex';
+}
+
+function confirmOrder(){
+    const addr = document.getElementById('full-address').value;
+    if(addr.trim()===''){ alert('من فضلك أدخل العنوان الكامل'); return; }
+    document.getElementById('address-overlay').style.display='none';
+    document.getElementById('confirmation-overlay').style.display='flex';
+}
+
+function showReceipt(){
+    document.getElementById('confirmation-overlay').style.display='none';
+    const receipt = document.getElementById('receipt-overlay');
+    const items = document.getElementById('receipt-items');
+    items.innerHTML='';
+    cart.forEach(item => {
+        items.innerHTML+=`<p><strong>${item.name}</strong>: ${item.description}</p>`;
+    });
+    receipt.style.display='flex';
+    cart = [];
+    document.getElementById('cart-count').innerText = '0';
+}
+
+function closeReceipt(){
+    document.getElementById('receipt-overlay').style.display='none';
+}
+
+renderProducts();
+</script>
+
+</body>
+</html>
